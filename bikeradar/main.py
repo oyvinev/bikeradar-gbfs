@@ -54,18 +54,19 @@ def run():
             template = jinja2.Template(f.read_text())
         m.get_root().render()
         header = m.get_root().header.render()  # type: ignore
-        return template.render(header=header)
+        return template.render(
+            header=header,
+            legend={
+                "green": "Ledige sykler",
+                "orange": "Få ledige sykler",
+                "red": "Ingen ledige sykler",
+                "gray": "Ingen info",
+            },
+        )
 
     @app.get("/_render", response_class=HTMLResponse)
     async def render():
-        template = jinja2.Template(
-            """
-        {{ map_html|safe }}
-        <script>
-            {{ map_js|safe }}
-        </script>
-        """
-        )
+        template = jinja2.Template("{{ map_html|safe }}<script>{{ map_js|safe }}</script>")
 
         m = Map()
 
