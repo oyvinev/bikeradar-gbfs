@@ -4,8 +4,3 @@ services:
     build: .
     volumes:
       - .:/app
-    environment:
-      - GBFS_URL=https://gbfs.urbansharing.com/oslobysykkel.no/gbfs.json
-        GBFS_LANGUAGE=nb
-    entrypoint:
-      - uvicorn --reload bike_radar.main:create_api

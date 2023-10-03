@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN pip install --disable-pip-version-check poetry
 WORKDIR /app
-COPY pyproject.toml poetry.lock .
+COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root -v --no-interaction --no-ansi
 COPY . /app
