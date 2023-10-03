@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from folium import Map, Marker
 
-from bikeradar.gbfs import Station, StationStatus, get_stations, get_status
+from bikeradar.gbfs import GBFSApi, Station, StationStatus
 
 
 def popup(station: Station, station_status: StationStatus) -> str:
@@ -14,14 +14,15 @@ def popup(station: Station, station_status: StationStatus) -> str:
 
 
 def run():
+    gbfs_api = GBFSApi("https://gbfs.urbansharing.com/oslobysykkel.no/gbfs.json", "nb")
     app = FastAPI()
 
     @app.get("/", response_class=HTMLResponse)
     async def root():
         m = Map()
 
-        stations = await get_stations()
-        station_status = await get_status()
+        stations = await gbfs_api.get_stations()
+        station_status = await gbfs_api.get_status()
 
         for station in stations:
             marker = Marker(

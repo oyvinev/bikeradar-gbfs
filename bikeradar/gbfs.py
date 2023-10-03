@@ -1,3 +1,5 @@
+import os
+
 import requests
 from pydantic import BaseModel
 
@@ -21,16 +23,50 @@ class StationStatus(BaseModel):
     last_reported: int
 
 
-async def get_stations() -> list[Station]:
-    response = requests.get(
-        "https://gbfs.urbansharing.com/oslobysykkel.no/station_information.json"
-    )
-    return [Station.model_validate(station) for station in response.json()["data"]["stations"]]
+class Feed(BaseModel):
+    name: str
+    url: str
 
 
-async def get_status() -> dict[str, StationStatus]:
-    response = requests.get("https://gbfs.urbansharing.com/oslobysykkel.no/station_status.json")
-    return {
-        station["station_id"]: StationStatus.model_validate(station)
-        for station in response.json()["data"]["stations"]
-    }
+class GBFSApi:
+    def __init__(self, base_url: str, language: str):
+        self.base_url = base_url
+        self.language = language
+        self.feeds = self._get_feeds()
+
+        try:
+            self.system_information_url = next(
+                feed.url for feed in self.feeds if feed.name == "system_information"
+            )
+            self.station_information_url = next(
+                feed.url for feed in self.feeds if feed.name == "station_information"
+            )
+            self.station_status_url = next(
+                feed.url for feed in self.feeds if feed.name == "station_status"
+            )
+        except StopIteration:
+            raise ValueError("Could not find station_information or station_status feed")
+
+    def _get_feeds(self) -> list[Feed]:
+        response = requests.get(self.base_url)
+        try:
+            feeds = response.json()["data"][self.language]["feeds"]
+        except KeyError:
+            raise ValueError(f"Could not find feeds for language '{self.language}'")
+
+        return [Feed.model_validate(feed) for feed in feeds]
+
+    async def get_stations(self) -> list[Station]:
+        response = requests.get(self.station_information_url)
+        if response.status_code >= 400:
+            raise ValueError("Could not get stations")
+        return [Station.model_validate(station) for station in response.json()["data"]["stations"]]
+
+    async def get_status(self) -> dict[str, StationStatus]:
+        response = requests.get(self.station_status_url)
+        if response.status_code >= 400:
+            raise ValueError("Could not get station status")
+        return {
+            station["station_id"]: StationStatus.model_validate(station)
+            for station in response.json()["data"]["stations"]
+        }
