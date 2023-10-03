@@ -1,6 +1,12 @@
 services:
   bikeradar:
     container_name: bikeradar
+    network_mode: host
     build: .
     volumes:
       - .:/app
+    entrypoint:
+       - uvicorn
+       - --reload
+       - --factory
+       - bikeradar.main:run

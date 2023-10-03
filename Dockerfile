@@ -12,5 +12,5 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --no-root -v --no-interaction --no-ansi
 COPY . /app
 
-ENTRYPOINT [ "sleep", "infinity" ]
+ENTRYPOINT [ "uvicorn", "--factory", "bikeradar.main:run" ]
 
