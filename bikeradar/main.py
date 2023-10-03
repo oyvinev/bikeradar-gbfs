@@ -14,8 +14,8 @@ def run():
 
         stations = await get_stations()
 
-        for station in stations["data"]["stations"]:
-            marker = Marker(location=[station["lat"], station["lon"]], popup=station["name"])
+        for station in stations:
+            marker = Marker(location=[station.lat, station.lon], popup=station.name)
             marker.add_to(m)
 
         return m._repr_html_()
