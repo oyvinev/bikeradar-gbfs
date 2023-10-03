@@ -1,0 +1,39 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/postgres
+{
+	"name": "bikeradar",
+	"dockerComposeFile": "../docker-compose.yml",
+	"service": "bikeradar",
+	"workspaceFolder": "/app",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.languageServer": "Pylance",
+				"editor.defaultFormatter": "ms-python.black-formatter",
+				"black-formatter.showNotifications": "onWarning",
+				"black-formatter.importStrategy": "fromEnvironment",
+				"black-formatter.path": [
+				  "/usr/local/bin/black"
+				],
+				"isort.args": [
+					"--settings-path=${workspaceFolder}/pyproject.toml"
+				],
+				"isort.check": true,
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+				  "source.organizeImports": true
+				}
+			  },
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.isort",
+				"ms-python.black-formatter",
+				"yzhang.markdown-all-in-one",
+				"GitHub.copilot",
+				"eamodio.gitlens"
+			]
+		}
+	}
+}
