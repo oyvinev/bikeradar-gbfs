@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "bikeradar-gbfs"
+version = "0.1.0"
+description = "Real time web view of Oslo Bysykkel"
+authors = ["Øyvind Evju <oyvevju (at) gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Jinja2 = "^3.1.2"
+folium = "^0.14.0"
+fastapi = {extras = ["all"], version = "^0.103.0"}
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+isort = "^5.12.0"
+mypy = "^1.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
