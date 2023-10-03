@@ -32,7 +32,8 @@
 				"ms-python.black-formatter",
 				"yzhang.markdown-all-in-one",
 				"GitHub.copilot",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"esbenp.prettier-vscode"
 			]
 		}
 	}

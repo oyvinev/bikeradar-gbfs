@@ -1,5 +1,7 @@
 from datetime import datetime
+from pathlib import Path
 
+import jinja2
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from folium import Icon, Map, Marker
@@ -46,7 +48,25 @@ def run():
         )
 
     @app.get("/", response_class=HTMLResponse)
-    async def root():
+    async def index():
+        m = Map()
+        with Path(__file__).parent / "template.html" as f:
+            template = jinja2.Template(f.read_text())
+        m.get_root().render()
+        header = m.get_root().header.render()  # type: ignore
+        return template.render(header=header)
+
+    @app.get("/_render", response_class=HTMLResponse)
+    async def render():
+        template = jinja2.Template(
+            """
+        {{ map_html|safe }}
+        <script>
+            {{ map_js|safe }}
+        </script>
+        """
+        )
+
         m = Map()
 
         stations = await gbfs_api.get_stations()
@@ -63,6 +83,10 @@ def run():
                 ),
             )
             marker.add_to(m)
+        m.get_root().render()
+        body_html = m.get_root().html.render()  # type: ignore
+        script = m.get_root().script.render()  # type: ignore
+        return template.render(map_html=body_html, map_js=script)
 
         return m._repr_html_()
 

@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>OSLO BYSYKKEL</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- htmx for reloading map -->
+    <script
+      src="https://unpkg.com/htmx.org@1.9.6"
+      integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Fix to ensure map is rendered in full height (otherwise height is 0) -->
+    <style>
+      .folium-map {
+        height: 100%;
+      }
+    </style>
+    {{ header | safe}}
+  </head>
+  <body>
+    <!-- Use htmx to trigger reload of map data -->
+    <div
+      style="width: 100%; height: 100%"
+      hx-get="/_render"
+      hx-trigger="load, every 30s"
+    ></div>
+  </body>
+</html>
+"""
