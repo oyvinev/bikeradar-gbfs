@@ -1,11 +1,14 @@
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+from folium import Map
 
 
 def run():
     app = FastAPI()
 
-    @app.get("/")
+    @app.get("/", response_class=HTMLResponse)
     async def root():
-        return {"message": "Hello World"}
+        m = Map()
+        return m._repr_html_()
 
     return app
