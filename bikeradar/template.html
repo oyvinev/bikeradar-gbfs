@@ -16,13 +16,24 @@
       }
     </style>
     {{ header | safe}}
+    <!-- Utility functions to get current map state, used to refresh without resetting zoom or position -->
+    <script>
+        var myMap = null;
+        L.Map.addInitHook(function () {
+            myMap = this;
+        });
+        const getLatitude = () => myMap?.getCenter().lat;
+        const getLongitude = () => myMap?.getCenter().lng;
+        const getZoom = () => myMap?.getZoom();
+      </script>
   </head>
   <body>
     <!-- Use htmx to trigger reload of map data -->
     <div
       style="width: 100%; height: 100%"
       hx-get="/_render"
-      hx-trigger="load, every 30s"
+      hx-trigger="load, every 60s"
+      hx-vals="js:{lat: getLatitude() ?? 'auto', lng: getLongitude() ?? 'auto', zoom: getZoom() ?? 'auto'}"
     ></div>
 
     <!-- Legend -->

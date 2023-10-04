@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+from typing import Literal
 
 import jinja2
 from fastapi import FastAPI, Request
@@ -68,14 +69,20 @@ def run():
         )
 
     @app.get("/_render", response_class=HTMLResponse)
-    async def render():
+    async def render(
+        lat: float | Literal["auto"] = "auto",
+        lng: float | Literal["auto"] = "auto",
+        zoom: int | Literal["auto"] = "auto",
+    ):
         template = jinja2.Template("{{ map_html|safe }}<script>{{ map_js|safe }}</script>")
-
-        m = Map()
 
         stations = await gbfs_api.get_stations()
         station_status = await gbfs_api.get_status()
-        m.fit_bounds([(station.lat, station.lon) for station in stations])
+        if any(param == "auto" for param in [lat, lng, zoom]):
+            m = Map()
+            m.fit_bounds([(station.lat, station.lon) for station in stations])
+        else:
+            m = Map(location=[lat, lng], zoom_start=zoom)  # type: ignore
         for station in stations:
             marker = Marker(
                 location=[station.lat, station.lon],
