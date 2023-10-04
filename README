@@ -1,1 +1,20 @@
-Interactive map of Oslo bysykkel using https://oslobysykkel.no/apne-data/sanntid
+# Bike radar
+
+Realtime view of GBFS (General Bikeshare Feed Specification) data in an interactive map using Folium, htmx and FastAPI.
+
+## Usage
+
+Run `docker compose up` - go to http://localhost:8000.
+
+Interactive map will be available on http://localhost:8000. The map will auto-refresh every 60 seconds.
+
+## Configure
+
+The default GBFS system it displays data from is for [Oslo Bysykkel](https://oslobysykkel.no). To modify this, set GBFS_BASE_URL environment variable to an auto-discovery GBFS endpoint.
+
+A list of available GBFS endpoints can be found [here](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
+
+
+## Note
+
+Legend and popups are written in Norwegian, as this was designed for [Oslo Bysykkel](https://oslobysykkel.no)
