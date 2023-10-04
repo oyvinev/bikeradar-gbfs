@@ -16,3 +16,44 @@ services:
       - GBFS_BASE_URL=https://gbfs.urbansharing.com/oslobysykkel.no/gbfs.json
       - GBFS_LANGUAGE=nb
 
+  bikeradar-test:
+    extends: bikeradar
+    container_name: bikeradar-test
+    network_mode: host
+    depends_on:
+      - gbfs-dummy
+    entrypoint:
+       - uvicorn
+       - --reload
+       - --factory
+       - --port
+       - "8001"
+       - bikeradar.main:run
+    environment:
+      - GBFS_BASE_URL=http://localhost:9000/gbfs.json
+      - GBFS_LANGUAGE=nb
+    profiles: ["test"]
+
+  gbfs-dummy:
+    network_mode: host
+    image: python:3.11.5-slim-bookworm
+    command: python -m http.server 9000
+    working_dir: /testdata
+    volumes:
+      - ./tests/testdata:/testdata
+    profiles: ["test"]
+
+  cypress:
+    network_mode: host
+    image: cypress/included:13.2.0
+    depends_on:
+      - bikeradar-test
+    volumes:
+      - .:/app
+    working_dir: /app
+    profiles: ["test"]
+
+  pytest:
+    extends: bikeradar-test
+    entrypoint: pytest
+    profiles: ["test"]
