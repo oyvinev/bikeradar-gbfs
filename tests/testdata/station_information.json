@@ -1,0 +1,135 @@
+{
+    "last_updated": 1696364580,
+    "ttl": 15,
+    "version": "2.3",
+    "data": {
+      "stations": [
+        {
+          "station_id": "3725",
+          "name": "Vestre Aker Kirke",
+          "address": "Kirkeveien 159",
+          "lat": 59.936006155097004,
+          "lon": 10.73190903696522,
+          "is_virtual_station": false,
+          "capacity": 19,
+          "station_area": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    10.731887010852915,
+                    59.936078540382994
+                  ],
+                  [
+                    10.731773356112825,
+                    59.93593906615416
+                  ],
+                  [
+                    10.731911680098818,
+                    59.93592317664789
+                  ],
+                  [
+                    10.732023572750194,
+                    59.93605735446209
+                  ],
+                  [
+                    10.731887010852915,
+                    59.936078540382994
+                  ]
+                ]
+              ]
+            ]
+          },
+          "rental_uris": {
+            "android": "oslobysykkel://stations/3725",
+            "ios": "oslobysykkel://stations/3725"
+          }
+        },
+        {
+          "station_id": "2358",
+          "name": "Aker Brygge 3 mot Fergene",
+          "address": "Dokkveien 1, 0250 Oslo",
+          "lat": 59.91087115068967,
+          "lon": 10.729828757277915,
+          "is_virtual_station": false,
+          "capacity": 14,
+          "station_area": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    10.729848884043207,
+                    59.910962336688044
+                  ],
+                  [
+                    10.729534724229808,
+                    59.91079850913218
+                  ],
+                  [
+                    10.729776694532546,
+                    59.91072642736819
+                  ],
+                  [
+                    10.73010113293222,
+                    59.91089562850067
+                  ],
+                  [
+                    10.729848884043207,
+                    59.910962336688044
+                  ]
+                ]
+              ]
+            ]
+          },
+          "rental_uris": {
+            "android": "oslobysykkel://stations/2358",
+            "ios": "oslobysykkel://stations/2358"
+          }
+        },
+        {
+          "station_id": "2357",
+          "name": "Aker Brygge 2 mot Rådhusplassen",
+          "address": "Brynjulf Bulls plass 2, 0250 Oslo",
+          "lat": 59.91111544486938,
+          "lon": 10.730396895054923,
+          "is_virtual_station": false,
+          "capacity": 24,
+          "station_area": {
+            "type": "MultiPolygon",
+            "coordinates": [
+              [
+                [
+                  [
+                    10.730548419554253,
+                    59.911257551153795
+                  ],
+                  [
+                    10.730127150782835,
+                    59.911078762660765
+                  ],
+                  [
+                    10.73030174324336,
+                    59.910993960578736
+                  ],
+                  [
+                    10.730753965638968,
+                    59.91118155197066
+                  ],
+                  [
+                    10.730548419554253,
+                    59.911257551153795
+                  ]
+                ]
+              ]
+            ]
+          },
+          "rental_uris": {
+            "android": "oslobysykkel://stations/2357",
+            "ios": "oslobysykkel://stations/2357"
+          }
+        }
+      ]
+    }
+  }
