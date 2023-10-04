@@ -9,4 +9,10 @@ services:
        - uvicorn
        - --reload
        - --factory
+       - --port
+       - "8000"
        - bikeradar.main:run
+    environment:
+      - GBFS_BASE_URL=https://gbfs.urbansharing.com/oslobysykkel.no/gbfs.json
+      - GBFS_LANGUAGE=nb
+

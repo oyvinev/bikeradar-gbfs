@@ -29,7 +29,12 @@ class Feed(BaseModel):
 
 
 class GBFSApi:
-    def __init__(self, base_url: str, language: str):
+    def __init__(self, base_url: str | None = None, language: str | None = None):
+        if not base_url:
+            base_url = os.environ["GBFS_BASE_URL"]
+        if not language:
+            language = os.environ["GBFS_LANGUAGE"]
+
         self.base_url = base_url
         self.language = language
         self.feeds = self._get_feeds()

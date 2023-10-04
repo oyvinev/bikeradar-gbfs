@@ -37,7 +37,7 @@ def icon_color(station_status: StationStatus | None):
 
 
 def run():
-    gbfs_api = GBFSApi("https://gbfs.urbansharing.com/oslobysykkel.no/gbfs.json", "nb")
+    gbfs_api = GBFSApi()
     app = FastAPI()
 
     @app.exception_handler(Exception)
@@ -88,7 +88,5 @@ def run():
         body_html = m.get_root().html.render()  # type: ignore
         script = m.get_root().script.render()  # type: ignore
         return template.render(map_html=body_html, map_js=script)
-
-        return m._repr_html_()
 
     return app
