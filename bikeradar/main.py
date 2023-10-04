@@ -18,8 +18,8 @@ def popup(station: Station, station_status: StationStatus | None) -> str:
 
     return f"""
     <b>{station.name}</b><br>
-    Ledige sykler: {station_status.num_bikes_available}<br>
-    Ledige plasser: {station_status.num_docks_available}
+    <span style="white-space: nowrap;">Ledige sykler: {station_status.num_bikes_available}</span><br>
+    <span style="white-space: nowrap;">Ledige plasser: {station_status.num_docks_available}</span><br>
     """
 
 
@@ -29,6 +29,8 @@ def icon_color(station_status: StationStatus | None):
     # TODO: Deal with potential timezone issues
     if datetime.now().timestamp() - station_status.last_reported > 5 * 60:
         return "gray"
+    if station_status.num_docks_available == 0:
+        return "blue"
     if station_status.num_bikes_available == 0:
         return "red"
     if station_status.num_bikes_available < 3:
@@ -57,6 +59,7 @@ def run():
         return template.render(
             header=header,
             legend={
+                "blue": "Fullt",
                 "green": "Ledige sykler",
                 "orange": "Få ledige sykler",
                 "red": "Ingen ledige sykler",
