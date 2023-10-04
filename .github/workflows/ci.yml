@@ -1,0 +1,23 @@
+name: Run test suites
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: isbang/compose-action@v1.5.1
+    - name: Run cypress tests
+      run: docker compose run cypress
+    - name: Run pytest
+      run: docker compose run pytest
+
+    
