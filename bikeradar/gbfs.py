@@ -28,21 +28,22 @@ class Feed(BaseModel):
     url: str
 
 
+class SystemInformation(BaseModel):
+    system_id: str
+    language: str
+    name: str
+
+
 class GBFSApi:
-    def __init__(self, base_url: str | None = None, language: str | None = None):
+    def __init__(self, base_url: str | None = None):
         if not base_url:
             base_url = os.environ["GBFS_BASE_URL"]
-        if not language:
-            language = os.environ["GBFS_LANGUAGE"]
 
         self.base_url = base_url
-        self.language = language
         self.feeds = self._get_feeds()
+        self.system_information = self._get_system_information()
 
         try:
-            self.system_information_url = next(
-                feed.url for feed in self.feeds if feed.name == "system_information"
-            )
             self.station_information_url = next(
                 feed.url for feed in self.feeds if feed.name == "station_information"
             )
@@ -55,11 +56,18 @@ class GBFSApi:
     def _get_feeds(self) -> list[Feed]:
         response = requests.get(self.base_url)
         try:
-            feeds = response.json()["data"][self.language]["feeds"]
+            feeds = list(response.json()["data"].values())[0]["feeds"]
         except KeyError:
-            raise ValueError(f"Could not find feeds for language '{self.language}'")
+            raise ValueError(f"Could not find feeds from '{self.base_url}'")
 
         return [Feed.model_validate(feed) for feed in feeds]
+
+    def _get_system_information(self) -> SystemInformation:
+        system_information_url = next(
+            feed.url for feed in self.feeds if feed.name == "system_information"
+        )
+        response = requests.get(system_information_url)
+        return SystemInformation.model_validate(response.json()["data"])
 
     async def get_stations(self) -> list[Station]:
         response = requests.get(self.station_information_url)

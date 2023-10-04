@@ -14,7 +14,6 @@ services:
        - bikeradar.main:run
     environment:
       - GBFS_BASE_URL=${GBFS_BASE_URL}
-      - GBFS_LANGUAGE=${GBFS_LANGUAGE}
 
   bikeradar-test:
     extends: bikeradar
@@ -31,7 +30,6 @@ services:
        - bikeradar.main:run
     environment:
       - GBFS_BASE_URL=http://localhost:9000/gbfs.json
-      - GBFS_LANGUAGE=nb
     profiles: ["test"]
 
   gbfs-dummy:

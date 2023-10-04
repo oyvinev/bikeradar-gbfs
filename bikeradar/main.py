@@ -58,6 +58,7 @@ def run():
         m.get_root().render()
         header = m.get_root().header.render()  # type: ignore
         return template.render(
+            title=gbfs_api.system_information.name,
             header=header,
             legend={
                 "blue": "Fullt",
