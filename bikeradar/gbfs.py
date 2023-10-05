@@ -35,6 +35,10 @@ class SystemInformation(BaseModel):
 
 
 class GBFSApi:
+    """
+    Wrapper for a GBFS API, given a base/auto-discovery URL
+    """
+
     def __init__(self, base_url: str | None = None):
         if not base_url:
             base_url = os.environ["GBFS_BASE_URL"]
@@ -55,6 +59,9 @@ class GBFSApi:
 
     def _get_feeds(self) -> list[Feed]:
         response = requests.get(self.base_url)
+        if response.status_code >= 400:
+            raise ValueError(f"Could not get feeds from '{self.base_url}'")
+
         try:
             feeds = list(response.json()["data"].values())[0]["feeds"]
         except KeyError:
@@ -67,18 +74,22 @@ class GBFSApi:
             feed.url for feed in self.feeds if feed.name == "system_information"
         )
         response = requests.get(system_information_url)
+        if response.status_code >= 400:
+            raise ValueError(f"Could not get system information from '{system_information_url}'")
         return SystemInformation.model_validate(response.json()["data"])
 
     async def get_stations(self) -> list[Station]:
+        "Return all stations from the station_information feed"
         response = requests.get(self.station_information_url)
         if response.status_code >= 400:
-            raise ValueError("Could not get stations")
+            raise ValueError(f"Could not get stations from '{self.station_information_url}'")
         return [Station.model_validate(station) for station in response.json()["data"]["stations"]]
 
     async def get_status(self) -> dict[str, StationStatus]:
+        "Return all station statuses from the station_status feed"
         response = requests.get(self.station_status_url)
         if response.status_code >= 400:
-            raise ValueError("Could not get station status")
+            raise ValueError(f"Could not get station status from '{self.station_status_url}'")
         return {
             station["station_id"]: StationStatus.model_validate(station)
             for station in response.json()["data"]["stations"]
